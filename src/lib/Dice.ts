@@ -23,13 +23,19 @@ export function d(notation: DiceNotation | string): number {
   const { number, dice, reroll = 0, bonus = 0, advantage } = notation
   let total = 0
   for (let i = 0; i < number; i++) {
-    let currentRoll = 0
-    do {
-      currentRoll = (advantage === 'a') ? Math.max(d({number: 1, dice}), d({number: 1, dice})) :
-        (advantage === 'd') ? Math.min(d({number: 1, dice}), d({number: 1, dice})) : 
-        Math.floor(Math.random()*dice)+1
-    } while (currentRoll <= reroll && currentRoll !== dice)
-    total += currentRoll
+    let result = roll(dice)
+    if (result <= reroll && result !== dice) result = roll(dice)
+    if (advantage) {
+      let second = roll(dice)
+      if (second <= reroll && second !== dice) second = roll(dice)
+      if (advantage === 'a' && second > result) result = second
+      if (advantage === 'd' && second < result) result = second
+    }
+    total += result
   }
   return Math.max(total + bonus, 1)
+}
+
+function roll(dice: Dice) {
+  return  Math.floor(Math.random()*dice)+1
 }
