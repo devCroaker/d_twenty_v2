@@ -9,7 +9,6 @@ export class Keyword {
 export class Scoped {
     required: Keyword[]
     restricted: Keyword[]
-    bonus: any
     constructor(required?: Keyword[], restricted?: Keyword[]) {
         this.required = (required) ? required : []
         this.restricted = (restricted) ? restricted : []

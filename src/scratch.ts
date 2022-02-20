@@ -6,7 +6,27 @@ import { Equiptment } from './lib/Equiptment'
 import { Choice, Job, Level } from './lib/Job'
 import { EntityProficiencies, Proficiencies } from './lib/Proficiencies'
 import { Race } from './lib/Race'
-import { Bonus, Scope } from './lib/Scope'
+import { Bonus, Keyword, Scope, Scoped } from './lib/Scope'
+
+class Action extends Scoped {
+    type: string
+    name: string
+    constructor(type?: string, name?: string, required?: Keyword[], restricted?: Keyword[]) {
+        super(required, restricted)
+        this.type = (type) ? type : 'full'
+        this.name = (name) ? name : 'Attack'
+    }
+}
+
+class Actions {
+    [key: string]: Action[]
+
+    full: Action[] = [ new Action ]
+    bonus: Action[] = []
+    free: Action[] = []
+    move: Action[] = []
+    react: Action[] = []
+}
 
 class Entity {
     [key: string]: any
